@@ -25,7 +25,13 @@ from models import *
 @method_decorator(login_required, name='dispatch')
 class IndexView(View):
     def get(self, request):
-        return render(request, "index.html", {})
+        user = request.user
+        foodset = user.foodset_set.all()
+        photo = Clips.objects.get(user=user)
+        return render(request, "index.html", {
+            "foodset":foodset,
+            "photo":photo,
+        })
 
 
 class RegisterView(View):
@@ -147,6 +153,7 @@ class FoodSetView(View):
             foodset = FoodSet()
             foodset.amount = amount
             foodset.time = time
+            foodset.user = request.user
             foodset.save()
             return HttpResponseRedirect(reverse("index"))
         else:

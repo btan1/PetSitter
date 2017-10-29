@@ -22,4 +22,11 @@ class UserProfile(AbstractUser):
 class FoodSet(models.Model):
     amount  = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='amount')
     time = models.CharField(max_length=10)
+    user = models.ForeignKey(UserProfile, default=None)
     add_time = models.DateTimeField(auto_now=True)
+
+
+class Clips(models.Model):
+    user = models.ForeignKey(UserProfile)
+    photos = models.ImageField(upload_to="clips/%Y/%m", default="pets/cmu.png", verbose_name="avatar")
+    add_time = models.DateTimeField()
