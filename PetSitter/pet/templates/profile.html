@@ -1,0 +1,82 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <br>
+<div class="container">
+    <div class="row">
+        <div class="col s1"></div>
+        <div class="col s10">
+            <div class="card">
+                <div class="card-image">
+                    <img src="/media/{{ user.avator }}">
+                    <span class="card-title"><strong>{{ user.petname }}</strong></span>
+                </div>
+                <div class="card-content">
+
+                    <div class="row">
+
+                    </div>
+                    <div class="row">
+                         <form action="{% url 'uploadavator' %}"  method="post" enctype="multipart/form-data">
+                             <div class="file-field input-field">
+                                 <div class="btn red lighten-2">
+                                     <span class="red lighten-2">Her Photo</span>
+                                     <input type="file" name="avator">
+                                 </div>
+                                 <div class="file-path-wrapper">
+                                     <input class="file-path validate" type="text">
+                                 </div>
+                             </div>
+                             <div class="row">
+                                 <div class="center-align">
+                                     <button style="" type="submit" class="btn-floating btn-large waves-effect waves-light red lighten-2 pulse"><i class="material-icons">pets</i></button>
+                                 </div>
+                             </div>
+                             {% csrf_token %}
+                         </form>
+                         <form class="col s12" method="POST" action="{% url 'profile' %}">
+                             <div class="row">
+                                 <div class="input-field col s12">
+                                     <input placeholder="her name" id="petname" name="petname" value="{{ user.petname }}"  >
+                                 </div>
+                             </div>
+                             {% if form.errors.petname %}
+                                 <div class="red-text lighten-2" role="alert" >{{ form.errors.petname }}</div>
+                             {% endif %}
+                             <div class="row">
+                                 <div class="input-field col s12">
+                                     <input placeholder="her age" name="petage" type="number" value="{{ user.petage }}" >
+                                 </div>
+                             </div>
+                             {% if form.errors.petage %}
+                                 <div class="red-text lighten-2" role="alert" >{{ form.errors.petage }}</div>
+                             {% endif %}
+
+                             <div class="row">
+                                 <div class="input-field col s12">
+                                     <textarea class="materialize-textarea" placeholder="her bio" name="petbio" type="text" >{{ user.petbio }}</textarea>
+                                 </div>
+                             </div>
+                             {% if form.errors.petbio %}
+                                 <div class="red-text lighten-2" role="alert" >{{ form.errors.petbio}}</div>
+                             {% endif %}
+
+
+                             <div class="row">
+                                 <div class="center-align">
+                                     <button style="" type="submit" class="btn-floating btn-large waves-effect waves-light red lighten-2 pulse"><i class="material-icons">pets</i></button>
+                                 </div>
+                             </div>
+                             {% csrf_token %}
+                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <br> <br> <br> <br>
+
+
+{% endblock %}

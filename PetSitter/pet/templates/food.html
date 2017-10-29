@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div>
+             <h4 class="center-align" >Food Setting</h4>
+            </div>
+        </div>
+      <div class="row">
+    <form class="col s12" method="POST" action="{% url 'foodset' %}">
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="food amount" type="number" name="amount"  >
+        </div>
+      </div>
+        {% if form.errors.amount %}
+                     <div class="red-text lighten-2" role="alert" >{{ form.errors.amount }}</div>
+         {% endif %}
+
+    <div class="row">
+        <div class="input-field col s12">
+          <input type="text" placeholder="time" name="time" class="timepicker">
+        </div>
+      </div>
+        {% if form.errors.time %}
+                     <div class="red-text lighten-2" role="alert" >{{ form.errors.time }}</div>
+         {% endif %}
+
+
+        <div class="row">
+            <div class="center-align">
+        <button style="" type="submit" class="btn-floating btn-large waves-effect waves-light red lighten-2 pulse"><i class="material-icons">pets</i></button>
+            </div>
+        </div>
+        {% csrf_token %}
+
+    </form>
+  </div>
+
+    </div>
+
+ <br> <br> <br> <br> <br> <br> <br>
+
+
+{% endblock %}
