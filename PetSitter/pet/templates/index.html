@@ -4,76 +4,81 @@
   <html>
     <head>
       <!--Import Google Icon Font-->
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="{% static 'materialize/css/materialize.min.css' %}" media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="{% static 'materialize/css/materialize.min.css' %}" media="screen,projection"/>
+        <script src="{% static 'js/d3.js' %}"></script>
+        <style type="text/css">
+            div.bar {
+    display: inline-block;
+    width: 15px;
+    margin-right: 2px;
+    background-color: #e57373;
+}
+        </style>
 
       <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
 
     <body>
     <nav>
-    <div class="nav-wrapper">
-      <a href="{% url 'index' %}" class="brand-logo">PetSitter</a>
-      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-         {% if request.user.is_authenticated %}
-                       <li><a >her behavior</a></li>
-                       <li><a >her food </a></li>
+        <div class="nav-wrapper">
+            <img style="width: 70px" src="{% static 'img/images.png' %}">
+            <a href="{% url 'index' %}" class="brand-logo">PetSitter</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                {% if request.user.is_authenticated %}
+                       <li><a href="{% url 'index' %}">her behavior</a></li>
+                       <li><a href="{% url 'foodset' %}">her food </a></li>
                        <li><a>her clips</a></li>
                        <li><a href="{% url 'logout' %}">logout</a></li>
                    {% else%}
                        <li><a href="{% url 'register' %}">Register</a></li>
                        <li><a href="{% url 'login' %}">Login</a></li>
                    {% endif %}
-      </ul>
-      <ul class="side-nav" id="mobile-demo">
-        {% if request.user.is_authenticated %}
-                       <li><a >her behavior</a></li>
-                       <li><a >her food </a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                {% if request.user.is_authenticated %}
+                       <li><a href="{% url 'index' %}">her behavior</a></li>
+                       <li><a href="{% url 'foodset' %}">her food </a></li>
                        <li><a>her clips</a></li>
                        <li><a href="{% url 'logout' %}">logout</a></li>
                    {% else%}
                        <li><a href="{% url 'register' %}" >Register</a></li>
                        <li><a href="{% url 'login' %}">Login</a></li>
                    {% endif %}
-      </ul>
-    </div>
-  </nav>
+            </ul>
+        </div>
+    </nav>
     {% block content %}
         <br><br><br><br>
         <div class="container">
         <div class="row">
-        <div class="col s4">
-
-      <div class="card">
-        <div class="card-image">
-          <img src="/media/{{ user.avator }}">
-
-
-            <span class="card-title"><strong>{{ user.petname }}</strong></span>
-          <a class="btn-floating halfway-fab waves-effect waves-light red lighten-2 pulse" href="{% url 'profile' %}"><i class="material-icons">add</i></a>
+            <div class="col s4">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/media/{{ user.avator }}">
+                        <span class="card-title"><strong>{{ user.petname }}</strong></span>
+                        <a class="btn-floating halfway-fab waves-effect waves-light red lighten-2 pulse" href="{% url 'profile' %}"><i class="material-icons">add</i></a>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>AGE</strong> </p>
+                        <p class="align-center">{{ user.petage }}</p>
+                        <br>
+                        <p><strong>BIO</strong> </p>
+                        <p class="align-center">{{ user.petbio }}</p><br>
+                    </div>
+                </div>
+            </div>
+            <div  class="col s8">
+                <div class="row " >
+                    <div class="col s1"></div>
+                    <div class="col s10" id="datavisual"></div>
+                    <div class="col s1"></div>
+                </div>
+            </div>
         </div>
-        <div class="card-content">
-
-            <p><strong>AGE</strong> </p>
-
-            <p class="align-center">{{ user.petage }}</p>
-            <br>
-            <p><strong>BIO</strong> </p>
-
-            <p class="align-center">{{ user.petbio }}</p>
-             <br>
-        </div>
-
-          </div></div>
-
-
-        </div>
-        <div class="col s8">
-        </div>
-
         </div>
 
     {% endblock %}
@@ -81,7 +86,7 @@
 
 
 
-      <footer class="page-footer">
+       <footer class="page-footer">
           <div class="container">
             <div class="row">
               <div class="col l9 s12">
@@ -102,7 +107,7 @@
       <!--Import jQuery before materialize.js-->
       <script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
-      <script href="https://d3js.org/d3.v3.min.js"></script>
+
 
       <script type="text/javascript">
         $( document ).ready(function(){
@@ -124,5 +129,26 @@
 
         })
        </script>
+
+       {% block js %}
+    <script type="text/javascript">
+        var dataset = [];
+        for (var i = 0; i < 24; i++) {
+            var newNumber = Math.round(Math.random() * 30);  //随机生成0-30的整数
+    dataset.push(newNumber);
+}
+d3.select("#datavisual").selectAll("div")
+    .data(dataset)
+    .enter()
+    .append("div")
+    .attr("class", "bar")
+    .style("height", function(d) {
+        return (d * 5) + "px";
+    });
+
+    </script>
+    {% endblock %}
+
+
     </body>
   </html>
