@@ -20,6 +20,7 @@ from django.db import transaction
 from form import *
 from models import *
 
+import socket
 # Create your views here.
 
 @method_decorator(login_required, name='dispatch')
@@ -158,6 +159,20 @@ class FoodSetView(View):
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, 'food.html', {"form":form})
+
+class SocketView(View):
+    def get(self, request):
+        sock = socket.socket()
+        port = 8080
+        sock.bind(('127.0.0.1', port))
+        sock.listen(1)
+        while True:
+            client, address = sock.accept()
+
+            client.send('32')
+            client.close()
+
+        return render(request, "index.html", {})
 
 
 
