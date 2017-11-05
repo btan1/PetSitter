@@ -28,7 +28,10 @@ class IndexView(View):
     def get(self, request):
         user = request.user
         foodset = user.foodset_set.all()
-        photo = Clips.objects.get(user=user)
+        if Clips.objects.filter(user=user):
+            photo = Clips.objects.get(user=user)
+        else:
+            photo = None
         return render(request, "index.html", {
             "foodset":foodset,
             "photo":photo,
@@ -161,20 +164,48 @@ class FoodSetView(View):
             return render(request, 'food.html', {"form":form})
 
 class SocketView(View):
-    def get(self, request):
+    def get(self, request, flag):
         sock = socket.socket()
         port = 8080
-        sock.bind(('127.0.0.1', port))
-        sock.listen(1)
-        while True:
-            client, address = sock.accept()
+        sock.connect(('128.237.188.95',port))
 
-            client.send('32')
-            client.close()
-
+        if flag == "0":
+            sock.send('0')
+        else:
+            sock.send('1')
         return render(request, "index.html", {})
 
 
+class CameraView(View):
+    def get(self, request):
+        return render(request, 'camera.html', {})
+
+
+class FoodChangeView(View):
+
+    def get(self, request, id):
+
+        if FoodSet.objects.filter(id=id):
+            foodset = FoodSet.objects.get(id=id)
+        else:
+            foodset = None
+        return render(request, "foodchange.html", {
+            "foodset":foodset,
+        })
+
+    def post(self, request, id):
+        form = FoodSetForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            time = form.cleaned_data['time']
+            foodset = FoodSet.objects.get(id=id)
+            foodset.amount = amount
+            foodset.time = time
+            foodset.user = request.user
+            foodset.save()
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, 'food.html', {"form":form})
 
 
 

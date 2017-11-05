@@ -28,5 +28,5 @@ class FoodSet(models.Model):
 
 class Clips(models.Model):
     user = models.ForeignKey(UserProfile)
-    photos = models.ImageField(upload_to="clips/%Y/%m", default="pets/cmu.png", verbose_name="avatar")
+    photos = models.ImageField(upload_to="clips/%Y/%m", default="clips/cmu.png", verbose_name="avatar")
     add_time = models.DateTimeField()

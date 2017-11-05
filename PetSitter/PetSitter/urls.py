@@ -30,6 +30,8 @@ urlpatterns = [
     url(r'^profile/$', login_required(ProfileView.as_view()), name="profile"),
     url(r'^uploadavator/', login_required(UploadAvatorView.as_view()), name="uploadavator"),
     url(r'^foodset/', login_required(FoodSetView.as_view()), name="foodset"),
-    url(r'^socket/', login_required(SocketView.as_view()), name="socket"),
+    url(r'^socket/(?P<flag>.*)/$', login_required(SocketView.as_view()), name="socket"),
+    url(r'^camera/', login_required(CameraView.as_view()), name="camera"),
+    url(r'^foodchange/(?P<id>.*)/$', login_required(FoodChangeView.as_view()), name="foodchange"),
 
 ]

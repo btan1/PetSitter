@@ -11,7 +11,7 @@
         <style type="text/css">
             div.bar {
     display: inline-block;
-    width: 15px;
+    width: 10px;
     margin-right: 2px;
     background-color: #e57373;
 }
@@ -31,6 +31,7 @@
                 {% if request.user.is_authenticated %}
                        <li><a href="{% url 'index' %}">her behavior</a></li>
                        <li><a href="{% url 'foodset' %}">her food </a></li>
+                       <li><a href="{% url 'camera' %}">camera</a></li>
                        <li><a>her clips</a></li>
                        <li><a href="{% url 'logout' %}">logout</a></li>
                    {% else%}
@@ -42,6 +43,7 @@
                 {% if request.user.is_authenticated %}
                        <li><a href="{% url 'index' %}">her behavior</a></li>
                        <li><a href="{% url 'foodset' %}">her food </a></li>
+                       <li><a href="{% url 'camera' %}">camera</a></li>
                        <li><a>her clips</a></li>
                        <li><a href="{% url 'logout' %}">logout</a></li>
                    {% else%}
@@ -55,7 +57,7 @@
         <br><br><br><br>
         <div class="container">
         <div class="row">
-            <div class="col s4">
+            <div class="col s12 m5 ">
                 <div class="card">
                     <div class="card-image">
                         <img src="/media/{{ user.avator }}">
@@ -71,8 +73,14 @@
                     </div>
                 </div>
             </div>
-            <div  class="col s8">
+            <div  class="col s12 m7">
+
+
+
                 <div class="row " >
+                    <!--
+                    <p class="align-center red-text text-lighten-2"> Eating Time </p>
+                    </div>-->
                     <div class="col s1"></div>
                     <div class="col s10" id="datavisual"></div>
                     <div class="col s1"></div>
@@ -81,19 +89,18 @@
         </div>
 
             <div class="row">
-                <div class="col s2"></div>
-                <div class="col s8">
+
+                <div class="col s12">
       <div class="collection">
         {% for set in foodset %}
-        <a href="#" class="collection-item red-text lighiten-2">{{ set.add_time }}&nbsp;&nbsp;{{ set.amount }}&nbsp;&nbsp;{{ set.time }}</a>
+        <a href="{% url 'foodchange' set.id %}" class="collection-item red-text lighiten-2">{{ set.add_time }}&nbsp;&nbsp;&nbsp;{{ set.amount }}&nbsp;&nbsp;{{ set.time }}</a>
         {% endfor %}
       </div>
                 </div>
-                <div class="col s2"></div>
+
             </div>
         </div>
 
-        <a href="{% url 'socket' %}"><button class="btn" ></button></a>
 
     {% endblock %}
 
@@ -147,7 +154,7 @@
        {% block js %}
     <script type="text/javascript">
 
-        var w = 500;
+        var w = 300;
             var h = 250;
             var barPadding = 1;
         var dataset = [];
@@ -171,7 +178,7 @@
                .attr("y", function(d) {
                     return h - (d * 4);
                })
-               .attr("width", w / dataset.length - barPadding)
+               .attr("width", w / dataset.length - barPadding )
                .attr("height", function(d) {
                     return d * 4;
                })
