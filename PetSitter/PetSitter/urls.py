@@ -33,5 +33,11 @@ urlpatterns = [
     url(r'^socket/(?P<flag>.*)/$', login_required(SocketView.as_view()), name="socket"),
     url(r'^camera/', login_required(CameraView.as_view()), name="camera"),
     url(r'^foodchange/(?P<id>.*)/$', login_required(FoodChangeView.as_view()), name="foodchange"),
+    url(r'^uploadclips/', uploadClips, name="uploadavator"),
+    url(r'^clips/$', login_required(ClipView.as_view()), name="clipview"),
+    url(r'^share/$', login_required(ShareView.as_view()), name="shareview"),
+    url(r'^postshare/$', login_required(PostShareView.as_view()), name="postshare"),
+
+
 
 ]

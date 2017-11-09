@@ -32,7 +32,8 @@
                        <li><a href="{% url 'index' %}">her behavior</a></li>
                        <li><a href="{% url 'foodset' %}">her food </a></li>
                        <li><a href="{% url 'camera' %}">camera</a></li>
-                       <li><a>her clips</a></li>
+                       <li><a href="{% url 'clipview' %}">her clips</a></li>
+                       <li><a href="{% url 'shareview' %}">share</a></li>
                        <li><a href="{% url 'logout' %}">logout</a></li>
                    {% else%}
                        <li><a href="{% url 'register' %}">Register</a></li>
@@ -44,7 +45,8 @@
                        <li><a href="{% url 'index' %}">her behavior</a></li>
                        <li><a href="{% url 'foodset' %}">her food </a></li>
                        <li><a href="{% url 'camera' %}">camera</a></li>
-                       <li><a>her clips</a></li>
+                       <li><a href="{% url 'clipview' %}">her clips</a></li>
+                       <li><a href="{% url 'shareview' %}">share</a></li>
                        <li><a href="{% url 'logout' %}">logout</a></li>
                    {% else%}
                        <li><a href="{% url 'register' %}" >Register</a></li>

@@ -1,5 +1,5 @@
 from django import forms
-from models import UserProfile
+from models import UserProfile, Clips
 from django.contrib.auth import authenticate
 
 
@@ -93,3 +93,4 @@ class FoodSetForm(forms.Form):
         "required": "You have to enter time",
 
     })
+

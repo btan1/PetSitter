@@ -15,6 +15,7 @@ from django.utils.decorators import method_decorator
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt
 
 
 from form import *
@@ -29,9 +30,12 @@ class IndexView(View):
         user = request.user
         foodset = user.foodset_set.all()
         if Clips.objects.filter(user=user):
-            photo = Clips.objects.get(user=user)
+            photo = Clips.objects.filter(user=user)
         else:
             photo = None
+
+
+
         return render(request, "index.html", {
             "foodset":foodset,
             "photo":photo,
@@ -167,13 +171,14 @@ class SocketView(View):
     def get(self, request, flag):
         sock = socket.socket()
         port = 8080
-        sock.connect(('128.237.188.95',port))
+        sock.connect(('192.168.137.243',port))
 
         if flag == "0":
             sock.send('0')
         else:
             sock.send('1')
-        return render(request, "index.html", {})
+
+        return render(request, 'camera.html', {})
 
 
 class CameraView(View):
@@ -206,6 +211,63 @@ class FoodChangeView(View):
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, 'food.html', {"form":form})
+
+
+@csrf_exempt
+def uploadClips(request):
+    if request.method == 'POST':
+
+        #clipsform = ClipsUploadForm(request.POST, request.FILES)
+        if request.META.has_key('HTTP_X_FORWARDED_FOR'):
+            ip = request.META['HTTP_X_FORWARDED_FOR']
+        else:
+            ip = request.META['REMOTE_ADDR']
+
+        user = UserProfile.objects.get(ipaddress=ip)
+        clips = Clips(user=user, photos=request.FILES.get('media'))
+        clips.save()
+
+
+        return HttpResponseRedirect(reverse("index"))
+
+
+class ClipView(View):
+    def get(self,request):
+        user = request.user
+        all_clips = Clips.objects.all().filter(user = user)
+
+
+        return render(request, 'clips.html', {
+            "all_clips":all_clips
+        })
+
+
+
+class ShareView(View):
+    def get(self, request):
+        user = request.user
+        all_clips = Clips.objects.all().filter(user=user)
+        posts = Post.objects.all().order_by("-add_time")
+
+        return render(request, 'share.html',{
+            "all_clips": all_clips,
+            "posts":posts,
+
+        })
+
+class PostShareView(View):
+    def post(self, request):
+        photo_path = request.POST.get("photo_path","")
+        post = request.POST.get("post", "")
+        if  photo_path and  post:
+            newpost = Post(user=request.user, photo_path=photo_path, post=post);
+            newpost.save()
+            return HttpResponseRedirect(reverse('shareview'))
+        else:
+            return HttpResponseRedirect(reverse('shareview'))
+
+
+
 
 
 

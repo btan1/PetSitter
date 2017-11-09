@@ -17,6 +17,7 @@ class UserProfile(AbstractUser):
     avator = models.ImageField(upload_to="pets/%Y/%m", default="pets/cmu.png", verbose_name="avatar")
     petage = models.IntegerField(null=True, blank=True)
     petbio = models.CharField(max_length=420, default=" ", null=True, blank=True)
+    ipaddress = models.CharField(max_length=20, default="0.0.0.0", null=True, blank = True)
 
 
 class FoodSet(models.Model):
@@ -29,4 +30,10 @@ class FoodSet(models.Model):
 class Clips(models.Model):
     user = models.ForeignKey(UserProfile)
     photos = models.ImageField(upload_to="clips/%Y/%m", default="clips/cmu.png", verbose_name="avatar")
-    add_time = models.DateTimeField()
+    add_time = models.DateTimeField(auto_now=True)
+
+class Post(models.Model):
+    user = models.ForeignKey(UserProfile)
+    photo_path = models.CharField(max_length=20)
+    add_time = models.DateTimeField(auto_now=True)
+    post = models.CharField(max_length=60)

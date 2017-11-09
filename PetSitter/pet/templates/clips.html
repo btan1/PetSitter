@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <br> <br> <br> <br> <br> <br>
+    <div class="container">
+
+
+        <div class="collection">
+            {% for clip in all_clips %}
+        <li class="collection-item " style="list-style-type:none;" >
+            <ul class="collapsible" data-collapsible="accordion">
+                <li  style="list-style-type:none;" >
+
+                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    <div class="collapsible-header"><img src="/media/{{ clip.photos }}"  style="width: 30px; height: 30px" alt="" class="circle">{{ clip.add_time }}</div>
+                    <div class="collapsible-body" style="background-color: transparent"><span  style="background-color: transparent"><img src="/media/{{ clip.photos }}"  alt="" ></span></div>
+
+
+                </li>
+
+
+
+          </ul>
+        </li>
+             {% endfor %}
+        </div>
+    </div>
+
+ <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+
+
+{% endblock %}
+
+{% block js %}
+
+
+{% endblock %}
